@@ -22,9 +22,9 @@
 package org.geolatte.geom.benchmark;
 
 import org.geolatte.geom.DimensionalFlag;
-import org.geolatte.geom.codec.PGWKTEncoder15;
 import org.geolatte.geom.Geometry;
 import org.geolatte.geom.GeometryType;
+import org.geolatte.geom.codec.PostgisWktEncoder;
 import org.geolatte.geom.jts.JTS;
 
 /**
@@ -46,7 +46,7 @@ public class TestDataSet {
         }
 
         for (i = 0; i < SIZE; i++) {
-            PGWKTEncoder15 encoder = new PGWKTEncoder15();
+            PostgisWktEncoder encoder = new PostgisWktEncoder();
             wktStrings[i] = encoder.encode(geometries[i]);
         }
     }

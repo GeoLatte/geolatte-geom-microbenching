@@ -24,10 +24,10 @@ package org.geolatte.geom.benchmark;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 import com.vividsolutions.jts.io.WKBWriter;
-import org.geolatte.geom.codec.Bytes;
-import org.geolatte.geom.codec.PGWKBEncoder15;
-import org.geolatte.geom.codec.WKBByteOrder;
 import org.geolatte.geom.Geometry;
+import org.geolatte.geom.codec.ByteBuffer;
+import org.geolatte.geom.codec.PostgisWkbEncoder;
+import org.geolatte.geom.codec.WkbByteOrder;
 
 /**
  * @author Karel Maesen, Geovise BVBA
@@ -54,8 +54,8 @@ public class WKBSpeedTests extends SimpleBenchmark{
         long dummy = 0;
         for (int i = 0; i < reps; i++) {
             for (Geometry geom : TestDataSet.geometries) {
-                PGWKBEncoder15 encoder = new PGWKBEncoder15();
-                Bytes bytes = encoder.encode(geom, WKBByteOrder.XDR);
+                PostgisWkbEncoder encoder = new PostgisWkbEncoder();
+                ByteBuffer bytes = encoder.encode(geom, WkbByteOrder.XDR);
                 dummy += bytes.toByteArray().length;
             }
         }
