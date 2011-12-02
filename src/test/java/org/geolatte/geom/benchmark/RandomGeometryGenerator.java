@@ -21,8 +21,8 @@
 
 package org.geolatte.geom.benchmark;
 
-import org.geolatte.geom.DimensionalFlag;
 import org.geolatte.geom.*;
+import org.geolatte.geom.crs.CrsId;
 
 import java.util.Random;
 
@@ -66,16 +66,17 @@ public class RandomGeometryGenerator {
 
 
     public static Point createRandomPoint(DimensionalFlag dim){
-        return Point.create(randomCoordinate(dim), dim, -1);
+        PointSequence ps = PointSequenceFactory.create(randomCoordinate(dim), dim);
+        return Point.create(ps, CrsId.UNDEFINED);
     }
 
     public static LineString createRandomLengthLineString(DimensionalFlag dim){
         int length = randomLineStringLength();
-        PointSequenceBuilder builder = new FixedSizePointSequenceBuilder(length, dim);
+        PointSequenceBuilder builder = PointSequenceBuilderFactory.newFixedSizePointSequenceBuilder(length, dim);
         for (int i = 0; i < length; i++) {
             builder.add(randomCoordinate(dim));
         }
-        return LineString.create(builder.toPointSequence(), -1);
+        return LineString.create(builder.toPointSequence(), CrsId.UNDEFINED);
     }
 
     private static int randomLineStringLength() {
