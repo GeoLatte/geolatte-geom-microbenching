@@ -66,8 +66,7 @@ public class WKTSpeedTest extends SimpleBenchmark {
         long dummy = 0;
         for (int i = 0; i < reps; i++) {
             for (Geometry geom : TestDataSet.geometries) {
-                PostgisWktEncoder encoder = new PostgisWktEncoder();
-                String wkt = encoder.encode(geom);
+                String wkt = Wkt.toWkt(geom);
                 dummy += wkt.length();
             }
         }
@@ -88,10 +87,10 @@ public class WKTSpeedTest extends SimpleBenchmark {
 
     public double timeFromWKT(int reps) {
         double dummy = 0;
-        PostgisWktDecoder decoder = new PostgisWktDecoder();
+
         for (int i = 0; i < reps; i++) {
             for (String s : TestDataSet.wktStrings) {
-                Geometry geom = decoder.decode(s);
+                Geometry geom = Wkt.fromWkt(s);
                 dummy += geom.getPointN(0).getX();
             }
         }
