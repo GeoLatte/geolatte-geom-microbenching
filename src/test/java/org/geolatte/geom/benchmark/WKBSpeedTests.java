@@ -24,21 +24,20 @@ package org.geolatte.geom.benchmark;
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
 import com.vividsolutions.jts.io.WKBWriter;
+import org.geolatte.geom.ByteBuffer;
+import org.geolatte.geom.ByteOrder;
 import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.ByteBuffer;
-import org.geolatte.geom.codec.PostgisWkbEncoder;
-import org.geolatte.geom.codec.WkbByteOrder;
+import org.geolatte.geom.codec.Wkb;
+
 
 /**
  * @author Karel Maesen, Geovise BVBA
  *         creation-date: 4/26/11
  */
-public class WKBSpeedTests extends SimpleBenchmark{
+public class WKBSpeedTests extends SimpleBenchmark {
 
 
-
-
-        public double timeJTSToWKB(int reps){
+    public double timeJTSToWKB(int reps) {
         long dummy = 0;
         for (int i = 0; i < reps; i++) {
             for (com.vividsolutions.jts.geom.Geometry geom : TestDataSet.jtsGeoms) {
@@ -50,13 +49,12 @@ public class WKBSpeedTests extends SimpleBenchmark{
         return dummy;
     }
 
-    public double timeToWKB(int reps){
+    public double timeToWKB(int reps) {
         long dummy = 0;
         for (int i = 0; i < reps; i++) {
             for (Geometry geom : TestDataSet.geometries) {
-                PostgisWkbEncoder encoder = new PostgisWkbEncoder();
-                ByteBuffer bytes = encoder.encode(geom, WkbByteOrder.XDR);
-                dummy += bytes.toByteArray().length;
+                ByteBuffer byteBuffer = Wkb.toWkb(geom, ByteOrder.NDR);
+                dummy += byteBuffer.limit();
             }
         }
         return dummy;

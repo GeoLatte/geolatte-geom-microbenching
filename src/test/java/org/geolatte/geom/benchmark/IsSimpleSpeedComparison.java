@@ -23,6 +23,7 @@ package org.geolatte.geom.benchmark;
 
 import com.google.caliper.Runner;
 import com.google.caliper.SimpleBenchmark;
+import org.geolatte.geom.Envelope;
 import org.geolatte.geom.Geometry;
 
 
@@ -32,20 +33,29 @@ import org.geolatte.geom.Geometry;
  */
 public class IsSimpleSpeedComparison extends SimpleBenchmark{
 
-    public int timeJTSIsSimple(int reps) {
+    public double timeJTSIsSimple(int reps) {
         int numSimple = 0;
+        double simpleArea = 0;
         for (com.vividsolutions.jts.geom.Geometry geom : TestDataSet.jtsGeoms) {
-            if (geom.isSimple()) numSimple++;
+            if (geom.isSimple()) {
+                numSimple++;
+                simpleArea += geom.getEnvelopeInternal().getArea();
+            }
         }
-        return numSimple;
+        return simpleArea;
     }
 
-    public int timeIsSimple(int reps) {
+    public double timeIsSimple(int reps) {
         int numSimple = 0;
+        double simpleArea = 0;
         for (Geometry geom : TestDataSet.geometries) {
-            if (geom.isSimple()) numSimple++;
+            if (geom.isSimple()) {
+                numSimple++;
+                Envelope env = geom.getEnvelope();
+                simpleArea += env.getHeight() * env.getWidth();
+            }
         }
-        return numSimple;
+        return simpleArea;
     }
 
 
