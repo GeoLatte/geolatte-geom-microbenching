@@ -66,17 +66,17 @@ public class RandomGeometryGenerator {
 
 
     public static Point createRandomPoint(DimensionalFlag dim){
-        PointSequence ps = PointSequenceFactory.create(randomCoordinate(dim), dim);
-        return Point.create(ps, CrsId.UNDEFINED);
+        PointSequence ps = PointCollectionFactory.create(randomCoordinate(dim), dim);
+        return new Point(ps, CrsId.UNDEFINED);
     }
 
     public static LineString createRandomLengthLineString(DimensionalFlag dim){
         int length = randomLineStringLength();
-        PointSequenceBuilder builder = PointSequenceBuilderFactory.newFixedSizePointSequenceBuilder(length, dim);
+        PointSequenceBuilder builder = PointSequenceBuilders.fixedSized(length, dim);
         for (int i = 0; i < length; i++) {
             builder.add(randomCoordinate(dim));
         }
-        return LineString.create(builder.toPointSequence(), CrsId.UNDEFINED);
+        return new LineString(builder.toPointSequence(), CrsId.UNDEFINED);
     }
 
     private static int randomLineStringLength() {

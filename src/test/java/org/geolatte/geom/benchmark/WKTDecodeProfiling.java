@@ -22,7 +22,7 @@
 package org.geolatte.geom.benchmark;
 
 import org.geolatte.geom.Geometry;
-import org.geolatte.geom.codec.PostgisWktDecoder;
+import org.geolatte.geom.codec.Wkt;
 
 /**
  * @author Karel Maesen, Geovise BVBA
@@ -32,9 +32,10 @@ public class WKTDecodeProfiling {
 
     public static void main(String[] args) {
         double dummy = 0d;
-        PostgisWktDecoder decoder = new PostgisWktDecoder();
+        //TODO -- if WKTDecoder is available as instantiable type, then
+        // use that in stead of inefficient Wkt utility class.
         for (String s : TestDataSet.wktStrings) {
-            Geometry geom = decoder.decode(s);
+            Geometry geom = Wkt.fromWkt(s);
             dummy += geom.getPointN(0).getX();
         }
         System.out.println("dummy = " + dummy);
